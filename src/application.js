@@ -30,12 +30,12 @@ function createTodo(todo) {
 // })
 
 // navCategory.addEventListener('click', (event) => {
-//     caller(event.target.name);
+//     caller(event.target);
 // })
 
-function caller(category) { // a cller to get details from the localStorage by giving a path, an easier way to get them 
-    const todoList = JSON.parse(LocalStorage.getItem(category));
-    insertTodoList(todoList);
+function caller(target) { // a cller to get details from the localStorage by giving a path, an easier way to get them 
+    const todoList = JSON.parse(LocalStorage.getItem(target.name));
+    insertTodoList(todoList, target);
 }
 
 
