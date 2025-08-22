@@ -9,7 +9,7 @@ function toggleForm(target) { //toggle between hidden and visible of an element 
 }
 
 //need to rewrite (adding document.createChild) and some other properties
-function InsertTodoList(list, target) { //need to adjust the code
+function insertTodoList(list, target) { //need to adjust the code
     const eleList = todoEleList();
     const attrList = todoAttrList();
     eleList.forEach((ele) =>  {
@@ -35,12 +35,26 @@ function todoAttrList() { // required attributes as keys, and its values
     return list;
 };
 
-const projectEle = function() { // element to add in the project category
-    // const listOne = [];
+const projectAttr = function() { // element to add in the project category
+    const list = {
+        class: "prj-tab",
+        "data-project": "unknown",
+    }
 };
 
-function insertProject(target) {
+function insertProject(target, name) { 
     const parent = target.parentNode();
-    const prj = projectEle();
-    parent.appendChild(prj)
+    const child = getProject();
+    if(!name) child.setAttribute(date-project, name);
+    parent.appendChild(child)
 }
+
+function getProject() { // create project element to append to projects parent
+    const attr = projectAttr();
+    const child = createChild('div');
+    for(let key in attr) {
+        child.setAttribute(key, attr[key]);
+    }
+};
+
+export {toggleForm, insertTodoList, insertProject};

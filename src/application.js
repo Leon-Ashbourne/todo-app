@@ -1,6 +1,6 @@
 import {LocalStorage} from './localStorage';
 import {prjForm, displayPrj, insertTodoList, showTodo} from './dom.js';
-
+{toggleForm, insertTodoList, insertProject};
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
