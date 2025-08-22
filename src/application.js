@@ -1,9 +1,9 @@
-import {LocalStorage} from './localStorage';
-import {prjForm, displayPrj, insertTodoList, showTodo} from './dom.js';
-{toggleForm, insertTodoList, insertProject};
+import {LocalStorage} from "./localStorage";
+import {toggleForm, insertTodoList, insertProject} from "./dom.js";
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
+const todoSbmtBtn = document.querySelector('#todo-submit');
 
 class Todo {
     constructor(title = 'unknown', description='Unknown', date='00-00-000', priority='0', category='default') {
@@ -11,12 +11,21 @@ class Todo {
     }
 }
 
-// addTodoBtn.addEventListener('click', (event)=> {
-//     createTodo(event.target);
-// })
+addTodoBtn.addEventListener('click', (event) => {
+    toggleForm(event.target);
+})
+
+addPrjBtn.addEventListener('click', (event) => {
+    toggleForm(event.target)
+})
+
+todoSbmtBtn.addEventListener('click', (event) => {
+    createTodo(event.target);
+})
 
 function createTodo(todo) {
-    const newTodo = new Todo('noooo', 'asdfdsf', 1235, 1, 'deftiii');
+    
+    const newTodo = new Todo()
     // LocalStorage.setItem(newTodo);
     console.log(newTodo);
 }
@@ -43,7 +52,7 @@ function addListener() { //adding anevent listener each time a new todo or a tod
     const todoShow = document.querySelector('.todo');
     todoShow.forEach((target) => {
         target.addEventListener('click', (event) => {
-            calcToShow(event.target.path); //should add some kind of link (path) to get the value from a localstorage easier
+            calcToShow(event.target.path); //should add some kind of key (path) to get the value from a localstorage easier
         })
     })
 }
@@ -54,12 +63,12 @@ function calcToShow(path) {
 }
 
 function todoEdit(target) {
-    target.addEventListner('click', (event)=> {
+    target.addEventListener('click', (event)=> {
         event.target.removeAttribute('readonly'); //add another event listner to the submit button upon choosing edit option.
     })
 }
 
-function eventListern(target, callbackFn) { //adds an eventlistner upon the target
+function eventListener(target, callbackFn) { //adds an eventlistner upon the target
     if(target || callBackFn) return;
     if (Object.getPrototypeOf(target) === Array.prototype) {
         target.forEach((ele) => {
