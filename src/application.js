@@ -20,16 +20,11 @@ addPrjBtn.addEventListener('click', (event) => {
 })
 
 todoSbmtBtn.addEventListener('click', (event) => {
-    getData(event.target);
+    formData(event.target);
 })
 
-function createTodo(data) {
-    const newTodo = new Todo(data);
-    LocalStorage.setItem() // rewrite code to accomadate in case based on the category (after all, we need to update the todo container for new todos in case the user in that category)
-}
-
-function getData(target) { // data from the form element
-    const todoData = target.parentElement.querySelectorAll('.todo');
+function formData(target) { // data from the form element
+    const todoData = target.parentNode.querySelectorAll('.todo');
     const data = {};
     todoData.forEach((ele) => {
         let name = ele.getAttribute('name');
@@ -37,8 +32,33 @@ function getData(target) { // data from the form element
         if(!value) value = "unknowm";
         data[name] = value;
     })
-    createTodo(data);
+    createTodoObject(data);
 }
+
+function createTodoObject(data) {
+    const newTodo = new Todo(data);
+    const key = data.category; // we are using the category as the kay for easier access
+    LocalStorage.setItem(key, data);
+    if(checkCurrentTab(key)) caller(key);
+}
+
+function checkCurrentTab(category) { //checks which page the user is viewing
+    const tab = document.querySelector('.current-tab');
+    if(category === tab.getAttribute("data-tab")) return true;
+    return false;
+}
+
+function changeCurrentTab(target) { // change the curren to the user selected and remove the class name from the previous
+    const tab = document.querySelector('.current-tab');
+    tab.classList.remove('current-tab');
+    target.classList.add('current-tab');
+}
+
+function caller(category) { // a caller to get details from the localStorage by giving the key (key is nothing but the category name)
+    const todoList = JSON.parse(LocalStorage.getItem(category));
+    getTodo(todoList);
+}
+
 // addPrjBtn.addEventListener('click', () => {
 //     prjForm();
 // })
@@ -50,12 +70,6 @@ function getData(target) { // data from the form element
 // navCategory.addEventListener('click', (event) => {
 //     caller(event.target);
 // })
-
-function caller(target) { // a cller to get details from the localStorage by giving the key
-    const todoList = JSON.parse(LocalStorage.getItem(target.name));
-    getTodo(todoList);
-}
-
 
 function addListener(target) { //adding anevent listener each time a new todo or a todo list is introduced
         target.addEventListener('click', (event) => {
