@@ -1,4 +1,5 @@
 import deleteImg from './delete.png'; // will add later
+import {addEventListener} from './index.html';
 
 function toggleForm(target) { //toggle between hidden and visible of an element on webpage
     if(target.display === 'block') {
@@ -8,23 +9,20 @@ function toggleForm(target) { //toggle between hidden and visible of an element 
     };
 }
 
-//need to rewrite (adding document.createChild) and some other properties
-function insertTodoList(list, target) { //need to adjust the code
-    const eleList = todoEleList();
-    const attrList = todoAttrList();
-    eleList.forEach((ele) =>  {
-        let key = attrList[i].key
-        ele.key = key; //key should change each time.
+//just insert the todo list in the container.
+function insertTodoList(list) { //need to adjust the code
+    list.forEach((key) => {
+
     })
 }
 
 function todoEleList() {
-    const list = ['div', 'div', 'div', 'div', 'input', 'img'];
+    this.list = ['div', 'div', 'div', 'div', 'input', 'img'];
     return list;
 }
 
 function todoAttrList() { // required attributes as keys, and its values
-    const list = [
+    this.list = [
         {class: "todo-list-container"},
         {id: "todo-check"},
         {id: "todo-title"},
@@ -34,6 +32,28 @@ function todoAttrList() { // required attributes as keys, and its values
     ]
     return list;
 };
+
+function getTodo(rawData) {
+    const attrList = new todoAttrList();
+    const eleList = new todoEleList();
+    const children = setELeAttr(eleList, attrList);
+}
+
+function setELeAttr(eleList, attrList) {
+    let index = 0;
+    eleList.forEach((ele) => {
+        eleList[index] = document.createChild(ele);
+        index++;
+    })
+    attrList.forEach((attr) => {
+        index = 0;
+        const keyList = Object.keys(attr);
+        keyList.forEach((key) => {
+            eleList[index].setAttribute(key, attr[key]);
+        })
+    })
+    insertTodoList(list);
+}
 
 const projectAttr = function() { // element to add in the project category
     const list = {
@@ -57,4 +77,4 @@ function getProject() { // create project element to append to projects parent
     }
 };
 
-export {toggleForm, insertTodoList, insertProject};
+export {toggleForm, getTodo, insertProject};

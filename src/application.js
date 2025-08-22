@@ -1,5 +1,5 @@
 import {LocalStorage} from "./localStorage";
-import {toggleForm, insertTodoList, insertProject} from "./dom.js";
+import {toggleForm, getTodo, insertProject} from "./dom.js";
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
@@ -16,20 +16,29 @@ addTodoBtn.addEventListener('click', (event) => {
 })
 
 addPrjBtn.addEventListener('click', (event) => {
-    toggleForm(event.target)
+    toggleForm(event.target);
 })
 
 todoSbmtBtn.addEventListener('click', (event) => {
-    createTodo(event.target);
+    getData(event.target);
 })
 
-function createTodo(todo) {
-    
-    const newTodo = new Todo()
-    // LocalStorage.setItem(newTodo);
-    console.log(newTodo);
+function createTodo(data) {
+    const newTodo = new Todo(data);
+    LocalStorage.setItem() // rewrite code to accomadate in case based on the category (after all, we need to update the todo container for new todos in case the user in that category)
 }
 
+function getData(target) { // data from the form element
+    const todoData = target.parentElement.querySelectorAll('.todo');
+    const data = {};
+    todoData.forEach((ele) => {
+        let name = ele.getAttribute('name');
+        let value = ele.value;
+        if(!value) value = "unknowm";
+        data[name] = value;
+    })
+    createTodo(data);
+}
 // addPrjBtn.addEventListener('click', () => {
 //     prjForm();
 // })
@@ -42,19 +51,16 @@ function createTodo(todo) {
 //     caller(event.target);
 // })
 
-function caller(target) { // a cller to get details from the localStorage by giving a path, an easier way to get them 
+function caller(target) { // a cller to get details from the localStorage by giving the key
     const todoList = JSON.parse(LocalStorage.getItem(target.name));
-    insertTodoList(todoList, target);
+    getTodo(todoList);
 }
 
 
-function addListener() { //adding anevent listener each time a new todo or a todo list is introduced
-    const todoShow = document.querySelector('.todo');
-    todoShow.forEach((target) => {
+function addListener(target) { //adding anevent listener each time a new todo or a todo list is introduced
         target.addEventListener('click', (event) => {
-            calcToShow(event.target.path); //should add some kind of key (path) to get the value from a localstorage easier
+            calcToShow(target.key); //should add some kind of key (path) to get the value from a localstorage easier
         })
-    })
 }
 
 function calcToShow(path) {
@@ -86,5 +92,7 @@ function deleteTodo (key){ //I am calling the path as key
     localStorage.removeItem(key);
 }
 
+
+export {addListener};
 
 //I need to add an event listener for delete button in dom.js to remove it from both dom and localstorage
