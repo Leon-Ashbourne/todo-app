@@ -1,5 +1,7 @@
 import {LocalStorage} from "./localStorage";
 import {toggleForm, getTodo, getProject} from "./dom.js";
+import projectform from "./project.form.html";
+import form from "./form.html";
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');

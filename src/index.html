@@ -29,4 +29,36 @@
         </div>
     </div>
 </body>
+
+<!-- todo form template-->
+<body>
+    <div>
+        <form action="#" div="todo-form" display="none">
+            <div><input type="text" id="title" name="title" class="input-fields">
+                <input type="text" id="description" class="input-fields" name="description">
+            </div>
+            <div>
+                <select name="category" id="category" class="input-fields">
+                    <option value="user" selected>user</option>
+                </select>
+                <input type="date" id="date" name="date" class="input-fields">
+                <input type="number" id="priority" name="priority" class="input-fields"> 
+                <input type="button" value="create" id="todo-submit">
+            </div>
+        </form>
+    </div>
+</body>
+
+<!-- project form template-->
+<body>
+    <div class="project-form">
+        <div id="cancel-btn"></div>
+        <div>
+            <input type="text" id="project-input">
+        </div>
+        <div>
+            <button class="btn submit">submit</button>
+        </div>
+    </div>
+</body>
 </html>
