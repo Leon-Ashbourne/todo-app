@@ -38,7 +38,7 @@ function appending(parent, child) { // mulltiple parents appeniding with resepec
 
 function todoEleList() { // get the list of elements needed for a single todo
     this.list = ['div', 'div', 'div', 'div', 'input', 'input', 'img'];
-    return list;
+    return this.list;
 }
 
 function todoAttrList() { // get the list of attrbute list requied for each html element
@@ -51,7 +51,7 @@ function todoAttrList() { // get the list of attrbute list requied for each html
         {type: "text"},
         {src: deleteImg },
     ]
-    return list;
+    return this.list;
 };
 
 function getTodo() { // the mediator between the creation of attr list, element list and attaching those attributes with respective their elements
@@ -77,28 +77,51 @@ function setELeAttr(eleList, attrList) { // set attributes to their respective e
     todoElements(eleList);
 }
 
-// everything works perfectly till here !!!
-
-const projectAttr = function() { // element to add in the project category
-    const list = {
-        class: "prj-tab",
-        "data-project": "unknown",
-    }
+/* project code */
+function getProject(category) { // decide what you should do with the project data you got
+    categoryName.setCategory(category);
+    createPrjElement() //for now just call createELement for the category navTab
 };
 
-function insertProject(target, name) { 
-    const parent = target.parentNode;
-    const child = getProject();
-    if(name) child.setAttribute(date-project, name);
-    parent.appendChild(child)
+const categoryName = (function categoryName(category = 'unknown') { // track the category name each time a new category is created;
+    let categoryName = category;
+    function setCategory(name) {
+        categoryName = name;
+    }
+    function getCategory() {
+        return categoryName;
+    }
+    return {setCategory, getCategory};
+})()
+
+function createPrjElement() { // create the element and its attribute required for the project tag in the html
+    const attr = new projectAttr();
+    const child = document.createElement('div');
+    setPrjElements(attr, child);
 }
 
-function getProject() { // create project element to append to projects parent
-    const attr = projectAttr();
-    const child = createChild('div');
-    for(let key in attr) {
-        child.setAttribute(key, attr[key]);
+function setPrjElements(attrObjList, child) { //set project element with its attributes
+    for(let key in attrObjList) {
+        child.setAttribute(key, attrObjList[key]);
     }
+    const category = categoryName.getCategory();
+    if(category) child.setAttribute('data-category', categoryName);
+    insertProject(child);
+}
+
+function insertProject(child) { //append the project element to the project section
+    const projectContainer = document.querySelector('.project-section');
+    projectContainer.appendChild(child);
+}
+
+function projectAttr() { // attributes to add in the project element
+    this.list = {
+        class: "project-tab",
+        "data-project": "unknown",
+    }
+    return this.list;
 };
 
-export {toggleForm, getTodo, insertProject};
+
+
+export {toggleForm, getTodo, getProject};

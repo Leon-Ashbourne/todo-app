@@ -1,21 +1,13 @@
 import {LocalStorage} from "./localStorage";
-import {toggleForm, getTodo, insertProject} from "./dom.js";
+import {toggleForm, getTodo, getProject} from "./dom.js";
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
 const todoSbmtBtn = document.querySelector('#todo-submit');
 
-class Todo {
-    constructor(title = 'unknown', description='Unknown', date='00-00-000', priority='0', category='default') {
-        return {title, description, date, priority, category};
-    }
-}
+class Todo {};
 
 addTodoBtn.addEventListener('click', (event) => {
-    toggleForm(event.target);
-})
-
-addPrjBtn.addEventListener('click', (event) => {
     toggleForm(event.target);
 })
 
@@ -25,21 +17,20 @@ todoSbmtBtn.addEventListener('click', (event) => {
 
 function formData(target) { // data from the form element
     const todoData = target.parentNode.querySelectorAll('.todo');
-    const data = {};
+    const data = new Todo();
     todoData.forEach((ele) => {
         let name = ele.getAttribute('name');
         let value = ele.value;
         if(!value) value = "unknowm";
         data[name] = value;
     })
-    createTodoObject(data);
+    LocalStgMedium(data);
 }
 
-function createTodoObject(data) {
-    const newTodo = new Todo(data);
-    const key = data.category; // we are using the category as the kay for easier access
+function LocalStgMedium(data) {
+    const key = data.category; // we are using the category as the key for easier access (this is to set a todo under a category)
     LocalStorage.setItem(key, data);
-    if(checkCurrentTab(key)) caller(key);
+    if(checkCurrentTab(key)) todoFromLocalStg(key);
 }
 
 function checkCurrentTab(category) { //checks which page the user is viewing
@@ -48,34 +39,38 @@ function checkCurrentTab(category) { //checks which page the user is viewing
     return false;
 }
 
-function changeCurrentTab(target) { // change the curren to the user selected and remove the class name from the previous
+function changeCurrentTab(target) { // change the current to the user selected and remove the class name from the previous
     const tab = document.querySelector('.current-tab');
     tab.classList.remove('current-tab');
     target.classList.add('current-tab');
 }
 
-function caller(category) { // a caller to get details from the localStorage by giving the key (key is nothing but the category name)
+// document.addEventListener('DOMContentLoaded', () => { //forgot why I tried adding it other than for default todos upon the dom content loaded
+
+// })
+
+function todoFromLocalStg(category) { // a caller to get details to append them
     const todoList = JSON.parse(LocalStorage.getItem(category));
-    getTodo(todoList);
+    LocalStorage.storeData = todoList;
+    getTodo();
 }
 
-// addPrjBtn.addEventListener('click', () => {
-//     prjForm();
-// })
+//project related code 
+addPrjBtn.addEventListener('click', (event) => {
+    toggleForm(event.target);
+})
 
-// prjSbmtBtn.addEventListener('click', (event) => {
-//     displayPrj(event.target.name);
-// })
+prjSbmtBtn.addEventListener('click', (event) => {
+    getProject(event.target.value);
+})
 
-// navCategory.addEventListener('click', (event) => {
-//     caller(event.target);
-// })
 
-function addListener(target) { //adding anevent listener each time a new todo or a todo list is introduced
-        target.addEventListener('click', (event) => {
-            calcToShow(target.key); //should add some kind of key (path) to get the value from a localstorage easier
-        })
-}
+
+// function addListener(target) { //adding anevent listener each time a new todo or a todo list is introduced
+//     target.addEventListener('click', (event) => {
+//         calcToShow(target.key); //should add some kind of key (path) to get the value from a localstorage easier
+//     })
+// }
 
 function calcToShow(path) {
     const todo = LocalStorage.getItem(path); //need to check whether the one we got is a single todo or a list of todos
