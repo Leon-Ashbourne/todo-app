@@ -83,8 +83,8 @@ function getProject(category) { // decide what you should do with the project da
     createPrjElement() //for now just call createELement for the category navTab
 };
 
-const categoryName = (function categoryName(category = 'unknown') { // track the category name each time a new category is created;
-    let categoryName = category;
+const categoryName = (function categoryName() { // track the category name each time a new category is created;
+    let categoryName = "unknown";
     function setCategory(name) {
         categoryName = name;
     }

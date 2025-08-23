@@ -4,7 +4,9 @@ import {toggleForm, getTodo, getProject} from "./dom.js";
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
 const todoSbmtBtn = document.querySelector('#todo-submit');
+const prjSbmtBtn = document.querySelector('#prj-submit-btn');
 
+/** todo code from adding to submitting the form */
 class Todo {};
 
 addTodoBtn.addEventListener('click', (event) => {
@@ -13,6 +15,7 @@ addTodoBtn.addEventListener('click', (event) => {
 
 todoSbmtBtn.addEventListener('click', (event) => {
     formData(event.target);
+    postFormSubmit(event.target);
 })
 
 function formData(target) { // data from the form element
@@ -25,6 +28,10 @@ function formData(target) { // data from the form element
         data[name] = value;
     })
     LocalStgMedium(data);
+}
+
+function postFormSubmit(target) { // practices to do after submitting form
+    toggleForm(target);
 }
 
 function LocalStgMedium(data) {
@@ -45,9 +52,10 @@ function changeCurrentTab(target) { // change the current to the user selected a
     target.classList.add('current-tab');
 }
 
-// document.addEventListener('DOMContentLoaded', () => { //forgot why I tried adding it other than for default todos upon the dom content loaded
-
-// })
+document.addEventListener('DOMContentLoaded', () => {
+    projectSection(); // call projectsection function to display projects
+    defaultTodoSection() // display default todos
+})
 
 function todoFromLocalStg(category) { // a caller to get details to append them
     const todoList = JSON.parse(LocalStorage.getItem(category));
@@ -55,42 +63,31 @@ function todoFromLocalStg(category) { // a caller to get details to append them
     getTodo();
 }
 
-//project related code 
+/*project code related frrom adding to submitting it */ 
 addPrjBtn.addEventListener('click', (event) => {
     toggleForm(event.target);
 })
 
 prjSbmtBtn.addEventListener('click', (event) => {
     getProject(event.target.value);
+    postFormSubmit(prjSbmtBtn.parentNode);
 })
 
-
-
-// function addListener(target) { //adding anevent listener each time a new todo or a todo list is introduced
-//     target.addEventListener('click', (event) => {
-//         calcToShow(target.key); //should add some kind of key (path) to get the value from a localstorage easier
-//     })
-// }
-
-function calcToShow(path) {
-    const todo = LocalStorage.getItem(path); //need to check whether the one we got is a single todo or a list of todos
-    displayTodo(todo); //make the form not mutable with readonly attribute
-}
-
+/* todo code from displaying to editing and submiting it */
 function todoEdit(target) {
     target.addEventListener('click', (event)=> {
         event.target.removeAttribute('readonly'); //add another event listner to the submit button upon choosing edit option.
     })
 }
 
-function eventListener(target, callbackFn) { //adds an eventlistner upon the target
-    if(target || callBackFn) return;
-    if (Object.getPrototypeOf(target) === Array.prototype) {
-        target.forEach((ele) => {
-            ele.addEventListener('click', callbackFn);
-        })
-    }
-}
+// function eventListener(target, callbackFn) { //adds an eventlistner upon the target
+//     if(target || callBackFn) return;
+//     if (Object.getPrototypeOf(target) === Array.prototype) {
+//         target.forEach((ele) => {
+//             ele.addEventListener('click', callbackFn);
+//         })
+//     }
+// }
 
 function editedTodo(key, value) {
     LocalStorage.setItem(key, value); //here can be a long path like firstkey.secondkey , we are gonna access the inner key through do notation

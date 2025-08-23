@@ -1,6 +1,6 @@
 class LocalStorage {
     constructor(){
-        throw Error("application denied! client doesn't have necessary permisson");
+        throw Error("application denied! client doesn't has necessary permisson");
     };
     static #data;
     setItem(key, value) {
