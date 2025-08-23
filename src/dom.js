@@ -1,5 +1,6 @@
 import deleteImg from './delete.png'; // will add later
 import {LocalStorage} from './localStorage.js';
+import {addListener, getTodoDetails, removeTodofromLS} from './application.js';
 
 
 function toggleForm(target) { //toggle between hidden and visible of an element on webpage
@@ -10,17 +11,41 @@ function toggleForm(target) { //toggle between hidden and visible of an element 
     };
 }
 
-function insertTodoList(todo) {
+function insertTodoList(todo) { //display todo list on the webpage
     const data = LocalStorage.storeData;
     const todoContainer = document.querySelector(".todolist-container");
+
+    todoContainer.innerHTML = '';
     data.forEach((dataBit) => {
-        todo.innerHtml = dataBit.category;
+        const children = todo.children;
+        const eventEle = [todo, children[2].firstChild];
+        
+        children[2].innerHTML = dataBit['title'];
+        setEventListeners(eventEle);
+        todoContainer.appendChild(todo);
     })
+}
+
+function setEventListeners(eventList) {
+    addListener(eventList[0], callBackForTodo())
+    addListener(eventList[1], callBackForDelete());
+}
+function callBackForDelete() {
+    return (event) => {
+        deleteTodo(event.target);
+    }
+}
+
+function callBackForTodo() {
+    return (event) => {
+        getTodoDetails(event.target);
+    }
 }
 
 function todoElements(list) { // gets the appending done for each element
     appendChildren(list[0], list.slice(1,4))
-    appending(list.slice(1, 4), list.slice(4));
+    appending(list.slice(1, 2).push(list[3]), list.slice(4));
+    setTodoTitle(list[2]);
     insertTodoList(list[0]);
 }
 
@@ -31,13 +56,15 @@ function appendChildren(parent, children) { // append children on a single paren
 }
 
 function appending(parent, child) { // mulltiple parents appeniding with resepective to their child
+    let index = 0;
     parent.forEach((parentEle) => {
         parentEle.appendChild(child[index]);
+        index++;
     })
 }
 
 function todoEleList() { // get the list of elements needed for a single todo
-    this.list = ['div', 'div', 'div', 'div', 'input', 'input', 'img'];
+    this.list = ['div', 'div', 'div', 'div', 'input', 'img'];
     return this.list;
 }
 
@@ -48,7 +75,6 @@ function todoAttrList() { // get the list of attrbute list requied for each html
         {id: "todo-title-container"},
         {id: "todo-delete-container"},
         {type: "checkbox"},
-        {type: "text"},
         {src: deleteImg },
     ]
     return this.list;
@@ -116,12 +142,20 @@ function insertProject(child) { //append the project element to the project sect
 
 function projectAttr() { // attributes to add in the project element
     this.list = {
-        class: "project-tab",
+        class: "nav-tab",
         "data-project": "unknown",
     }
     return this.list;
 };
 
+// delete todo from dom
+function deleteTodo(target) {
+    const parent = target.parentNode;
+    const children = parent.children;
+    const index = children.indexOf(target);
+    parent.removeChild(target);
+    removeTodofromLS(index);
+}
 
 
 export {toggleForm, getTodo, getProject};
