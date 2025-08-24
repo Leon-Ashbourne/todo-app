@@ -15,6 +15,9 @@ class LocalStorage {
     static set storeData(data) {
         LocalStorage.#data = data;
     }
+    static getKeys() {
+         return getKeysFromLS();
+    }
 }
 
 function addItemToLocalSt(key, val) {
@@ -38,6 +41,18 @@ function addItemToLocalSt(key, val) {
 function getItemFromLocalSt(key) {
     const tempStg = parseJson(localStorage.getItem(key)); // changing into an object
     return tempStg;
+}
+
+function getKeysFromLS() {
+    let keys = [];
+    let key = false;
+    let index = 0;
+    do{
+        key = localStorage.key(index);
+        if(key) keys.push(key);
+        index++
+    } while(key);
+    return keys;
 }
 
 function parseJson(jsonStr) {

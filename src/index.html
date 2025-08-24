@@ -16,14 +16,14 @@
                 </div>
                 <!-- User tabs-->
                 <div class="list-container">
-                    <div class="navTab" id="Inbox"></div>
-                    <div class="navTab" id="Tomorrow"></div>
+                    <div class="nav-tab current-tab" id="Inbox">Inbox</div>
+                    <div class="nav-tab" id="Tomorrow">Tomorrow</div>
                 </div>
                 <!-- project section-->
                 <div class="project-container">
                     <div class="project-section">
                         <div>Project</div>
-                        <div><button type="button" id="add-project">Add Project</button></div>
+                        <div><button id="add-project">Add Project</button></div>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
 </body>
 
 <!-- todo form template-->
-<body>
+<body id="todo-body" display="none">
     <div>
         <form action="#" div="todo-form" display="none">
             <div><input type="text" id="title" name="title" class="input-fields">
@@ -45,14 +45,14 @@
                 </select>
                 <input type="date" id="date" name="date" class="input-fields">
                 <input type="number" id="priority" name="priority" class="input-fields"> 
-                <input type="button" value="create" id="todo-submit">
+                <input type="button" value="create" id="todo-submit" class="todo-form-button">
             </div>
         </form>
     </div>
 </body>
 
 <!-- project form template-->
-<body>
+<body id="project-body">
     <div class="project-form">
         <div id="cancel-btn"></div>
         <div>

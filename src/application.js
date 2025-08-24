@@ -1,5 +1,6 @@
 import {LocalStorage} from "./localStorage";
-import {toggleForm, getTodo, getProject} from "./dom.js";
+import {toggleForm, getTodo, getProject, toggleTodoDisplay} from "./dom.js";
+import { getDefaultProject, getDefaultTodo } from "./default.js";
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
@@ -10,7 +11,8 @@ const prjSbmtBtn = document.querySelector('#submit-project');
 class Todo {};
 
 addTodoBtn.addEventListener('click', (event) => {
-    toggleForm(event.target);
+    toggleTodoDisplay(event.target) // toggling between edit/add/readonly
+    toggleForm(document.querySelector('#todo-body'));
 })
 
 todoSbmtBtn.addEventListener('click', (event) => {
@@ -31,7 +33,7 @@ function formData(target) { // data from the form element
 }
 
 function postFormSubmit(target) { // practices to do after submitting form
-    toggleForm(target);
+    toggleForm(document.querySelector('#project-body'));
     addListener(target, (event) => {changeCurrentTab(event.target)});
 }
 
@@ -59,8 +61,8 @@ function changeCurrentTab(target) { // change the current to the user selected a
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    projectSection(); // call projectsection function to display projects
-    defaultTodoSection() // display default todos
+    getDefaultProject(); // call projectsection function to display projects
+    getDefaultTodo() // display default todos
     attachEventNavTabs();
 })
 
@@ -78,8 +80,8 @@ function todoFromLocalStg(category) { // a caller to get details to append them
 }
 
 /*project code related frrom adding to submitting it */ 
-addPrjBtn.addEventListener('click', (event) => {
-    toggleForm(event.target);
+addPrjBtn.addEventListener('click', () => {
+    toggleForm(document.querySelector("#project-body"));
 })
 
 prjSbmtBtn.addEventListener('click', (event) => {
@@ -92,13 +94,14 @@ function getTodoDetails(target) {
     const todoListNodes = document.querySelector(".todolist-container").children;
     const indexNumber = todoListNodes.indexOf(target);
     const details = LocalStorage.getItem(target.getAttribute('data-category'));
+
     todoDetails(details[indexNumber]);
 }
 
 function todoDetails(todo) { // decides what should be done with todo details that user requested
     setTodoDetails(todo);
-    toggleTodo();
-    toggleForm();
+    toggleTodoDisplay(true);
+    toggleForm(document.querySelector("#todo-body"));
 }
 
 function setTodoDetails(todo) {
@@ -109,17 +112,6 @@ function setTodoDetails(todo) {
         if(node.getAttribute("name") === keys[index]) node.innerHTML = todo[keys[index]];
         index++;
     })
-}
-
-function toggleTodo() { //toggle between edit mode and display mode
-    if(todoSbmtBtn.getAttribute('class') === 'todo-submit') {
-        todoSbmtBtn.setAttribute('class', 'todo-edit');
-        const formEle = document.querySelector('.todo-form');
-        formEle.setAttribute('readonly', '');
-        return;
-    }
-    todoSbmtBtn.setAttribute('class', 'todo-submit');
-    formData.removeAttribute('readonly');
 }  
 
 function addListener(target, callBackFn) { //adds an eventlistner upon the target

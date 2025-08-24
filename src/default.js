@@ -1,5 +1,5 @@
 import {LocalStorage} from './localStorage.js';
-import {getTodo} from './dom.js';
+import {getTodo, getProject} from './dom.js';
 
 function defaultTodoData() {
     return [
@@ -42,7 +42,8 @@ function defaultTodoData() {
 }
 function getDefaultTodo() {
     const todo = new defaultTodoData();
-    LocalStorage.setItem("defaultUser", todo);
+    LocalStorage.storeData = todo;
+    LocalStorage.setItem = 'userDefined';
     displayDefaultTodo(todo);
 }
 
@@ -52,5 +53,19 @@ function displayDefaultTodo(todo) {
 }
 
 function getDefaultProject() {
-    LocalStorage.getItem()
+    const keys = LocalStorage.getKeys();
+    const prjList = [];
+    keys.forEach(key => {
+        if(key !== "userDefined") prjList.push(key);
+    })
+    if(prjList.length) displayDefaultProject(prjList);
+    displayDefaultProject(prjList);
 }
+
+function displayDefaultProject(list) {
+    list.forEach( prj => {
+        getProject(prj);
+    })
+}
+
+export {getDefaultTodo, getDefaultProject};

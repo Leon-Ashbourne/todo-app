@@ -131,7 +131,7 @@ function setPrjElements(attrObjList, child) { //set project element with its att
         child.setAttribute(key, attrObjList[key]);
     }
     const category = categoryName.getCategory();
-    if(category) child.setAttribute('data-category', categoryName);
+    if(category) child.setAttribute('id', categoryName);
     insertProject(child);
 }
 
@@ -143,10 +143,46 @@ function insertProject(child) { //append the project element to the project sect
 function projectAttr() { // attributes to add in the project element
     this.list = {
         class: "nav-tab",
-        "data-project": "unknown",
+        "id": "unknown",
     }
     return this.list;
 };
+
+// todo edit option display
+function toggleTodoDisplay(target) { //toggle between edit mode and display mode
+    if(target === 'true') {
+        readOnly();
+    }else if(document.getElementById('todo-edit')) {
+        editForm();
+        return;
+    }
+}
+
+function readOnly() {
+    const formEle = document.querySelector('.todo-form');
+
+    formEle.setAttribute('readonly', '');
+    toggleTodoButton();
+}
+
+function editForm() {
+    const formEle = document.querySelector('.todo-form');
+
+    formEle.removeAttribute('readonly');
+    toggleTodoButton();
+}
+
+function toggleTodoButton() {
+    const btn = document.getElementsByClassName('todo-form-button');
+    const id = btn.getAttribute('id');
+    if( id === 'todo-submit') {
+        btn.setAttribute('id', 'todo-edit');
+        btn.setAttribute('value', 'Edit');
+        return;
+    }
+    btn.setAttribute('id', 'todo-submit');
+    btn.setAttribute('value', 'Create');
+}
 
 // delete todo from dom
 function deleteTodo(target) {
@@ -158,4 +194,4 @@ function deleteTodo(target) {
 }
 
 
-export {toggleForm, getTodo, getProject};
+export {toggleForm, getTodo, getProject, toggleTodoDisplay};
