@@ -1,4 +1,4 @@
-import deleteImg from './delete.png'; // will add later
+import deleteImg from './delete.webp';
 import {LocalStorage} from './localStorage.js';
 import {addListener, getTodoDetails, removeTodofromLS} from './application.js';
 

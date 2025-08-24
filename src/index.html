@@ -11,7 +11,9 @@
         <div>
             <div id="navbar">
                 <!-- add todo button section-->
-                <div class="button-container"><input type="button"></div>
+                <div class="button-container">
+                    <button type="button" id="add-todo" class="button">Add Todo</button>
+                </div>
                 <!-- User tabs-->
                 <div class="list-container">
                     <div class="navTab" id="Inbox"></div>
@@ -21,7 +23,7 @@
                 <div class="project-container">
                     <div class="project-section">
                         <div>Project</div>
-                        <div><input type="button" class="add-project" value="ADD"></div>
+                        <div><button type="button" id="add-project">Add Project</button></div>
                     </div>
                 </div>
             </div>
@@ -57,7 +59,7 @@
             <input type="text" id="project-input">
         </div>
         <div>
-            <button class="btn submit">submit</button>
+            <button class="button" id="submit-project">submit</button>
         </div>
     </div>
 </body>

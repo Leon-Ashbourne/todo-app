@@ -4,7 +4,7 @@ import {toggleForm, getTodo, getProject} from "./dom.js";
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
 const todoSbmtBtn = document.querySelector('#todo-submit');
-const prjSbmtBtn = document.querySelector('#prj-submit-btn');
+const prjSbmtBtn = document.querySelector('#submit-project');
 
 /** todo code from adding to submitting the form */
 class Todo {};
