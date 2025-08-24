@@ -1,6 +1,8 @@
-import {LocalStorage} from "./localStorage";
-import {toggleForm, getTodo, getProject, toggleTodoDisplay} from "./dom.js";
-import { getDefaultProject, getDefaultTodo } from "./default.js";
+import {LocalStorage} from "./localStorage.js";
+import {toggleForm, getTodo, getProject, toggleTodoDisplay, addProjectToList} from "./dom.js";
+import { getDefaultProject, getDefaultTodo, displayDefaultTodo } from "./default.js";
+import './main.css';
+import './form.css';
 
 const addTodoBtn = document.querySelector('#add-todo');
 const addPrjBtn = document.querySelector('#add-project');
@@ -21,7 +23,7 @@ todoSbmtBtn.addEventListener('click', (event) => {
 })
 
 function formData(target) { // data from the form element
-    const todoData = target.parentNode.querySelectorAll('.todo');
+    const todoData = target.parentNode.parentNode.querySelectorAll('.input-fields');
     const data = new Todo();
     todoData.forEach((ele) => {
         let name = ele.getAttribute('name');
@@ -38,14 +40,14 @@ function postFormSubmit(target) { // practices to do after submitting form
 }
 
 function LocalStgMedium(data) {
-    const key = data.category; // we are using the category as the key for easier access (this is to set a todo under a category)
+    const key = data["category"]; // we are using the category as the key for easier access (this is to set a todo under a category)
     LocalStorage.setItem(key, data);
     if(checkCurrentTab(key)) todoFromLocalStg(key);
 }
 
 function checkCurrentTab(category) { //checks which page the user is viewing
     const tab = document.querySelector('.current-tab');
-    if(category === tab.getAttribute("data-tab")) return true;
+    if(category === tab.getAttribute("data-category")) return true;
     return false;
 }
 
@@ -62,10 +64,20 @@ function changeCurrentTab(target) { // change the current to the user selected a
 
 document.addEventListener('DOMContentLoaded', () => {
     getDefaultProject(); // call projectsection function to display projects
-    getDefaultTodo() // display default todos
+    checkForDefaultTodo() // display default todos
     attachEventNavTabs();
+
 })
 
+function checkForDefaultTodo() {
+    let check = LocalStorage.getItem('userDefined');;
+
+    if(!check) {
+        getDefaultTodo();
+        return;
+    }
+    displayDefaultTodo(check);
+}
 function attachEventNavTabs() {
     const navTabs = document.querySelectorAll('.nav-tab');
     navTabs.forEach((tab) => {
@@ -74,7 +86,7 @@ function attachEventNavTabs() {
 }
 
 function todoFromLocalStg(category) { // a caller to get details to append them
-    const todoList = JSON.parse(LocalStorage.getItem(category));
+    const todoList = LocalStorage.getItem(category);
     LocalStorage.storeData = todoList;
     getTodo();
 }
@@ -86,6 +98,7 @@ addPrjBtn.addEventListener('click', () => {
 
 prjSbmtBtn.addEventListener('click', (event) => {
     getProject(event.target.value);
+    addProjectToList(event.target.parentNode.getElementById('project-input').value)
     postFormSubmit(prjSbmtBtn.parentNode);
 })
 

@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="container">
-        <div div="header">To Do</div>
+        <div class="header">To Do</div>
         <div>
             <div id="navbar">
                 <!-- add todo button section-->
@@ -16,8 +16,8 @@
                 </div>
                 <!-- User tabs-->
                 <div class="list-container">
-                    <div class="nav-tab current-tab" id="Inbox">Inbox</div>
-                    <div class="nav-tab" id="Tomorrow">Tomorrow</div>
+                    <div class="nav-tab current-tab" data-category="userDefined" id="Inbox">Inbox</div>
+                    <div class="nav-tab" data-category="userDefined" id="Tomorrow">Tomorrow</div>
                 </div>
                 <!-- project section-->
                 <div class="project-container">
@@ -27,21 +27,19 @@
                     </div>
                 </div>
             </div>
-            <div id="todo-container"></div>
+            <div class="todolist-container"></div>
         </div>
     </div>
-</body>
 
 <!-- todo form template-->
-<body id="todo-body" display="none">
-    <div>
-        <form action="#" div="todo-form" display="none">
+    <div id="todo-body" display="none">
+        <form action="#" div="todo-form" >
             <div><input type="text" id="title" name="title" class="input-fields">
                 <input type="text" id="description" class="input-fields" name="description">
             </div>
             <div>
                 <select name="category" id="category" class="input-fields">
-                    <option value="user" selected>user</option>
+                    <option value="userDefined" selected>user</option>
                 </select>
                 <input type="date" id="date" name="date" class="input-fields">
                 <input type="number" id="priority" name="priority" class="input-fields"> 
@@ -49,18 +47,17 @@
             </div>
         </form>
     </div>
-</body>
 
 <!-- project form template-->
-<body id="project-body">
-    <div class="project-form">
+    <div class="project-form" id="project-body" display="none">
         <div id="cancel-btn"></div>
         <div>
-            <input type="text" id="project-input">
+            <input type="text" id="project-input" name="category">
         </div>
         <div>
             <button class="button" id="submit-project">submit</button>
         </div>
     </div>
+
 </body>
 </html>

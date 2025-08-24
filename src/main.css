@@ -1,0 +1,26 @@
+body {
+    box-sizing: border-box;
+    margin: 0px;
+    border: 0px;
+}
+
+.container {
+    margin: 0px;
+    border: 0px;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    border: 5px solid red;
+}
+
+#navbar {
+    border: 3px solid green;
+}
+
+.todolist-container {
+    border: 3px solid blue;
+}
+
+.header {
+    border: 5px solid yellow;
+}

@@ -14,22 +14,34 @@ function toggleForm(target) { //toggle between hidden and visible of an element 
 function insertTodoList(todo) { //display todo list on the webpage
     const data = LocalStorage.storeData;
     const todoContainer = document.querySelector(".todolist-container");
-
+    
     todoContainer.innerHTML = '';
+    if(Object.getPrototypeOf(data) === Object.prototype){
+        setUpTodo(todo, data['title']);
+        return;
+    }
+
     data.forEach((dataBit) => {
-        const children = todo.children;
-        const eventEle = [todo, children[2].firstChild];
-        
-        children[2].innerHTML = dataBit['title'];
-        setEventListeners(eventEle);
-        todoContainer.appendChild(todo);
+        let copy = todo.cloneNode(true);
+        setUpTodo(copy, dataBit['title']);
     })
+}
+
+function setUpTodo(todo, title) {
+    const todoContainer = document.querySelector(".todolist-container");
+    const children = todo.children;
+    const eventEle = [todo, children[2].firstChild];
+    
+    children[2].innerHTML = title;
+    setEventListeners(eventEle);
+    todoContainer.appendChild(todo);
 }
 
 function setEventListeners(eventList) {
     addListener(eventList[0], callBackForTodo())
     addListener(eventList[1], callBackForDelete());
 }
+
 function callBackForDelete() {
     return (event) => {
         deleteTodo(event.target);
@@ -44,8 +56,9 @@ function callBackForTodo() {
 
 function todoElements(list) { // gets the appending done for each element
     appendChildren(list[0], list.slice(1,4))
-    appending(list.slice(1, 2).push(list[3]), list.slice(4));
-    setTodoTitle(list[2]);
+    let temp = list.slice(1, 2);
+    temp.push(list[3]);
+    appending(temp, list.slice(4));
     insertTodoList(list[0]);
 }
 
@@ -71,9 +84,9 @@ function todoEleList() { // get the list of elements needed for a single todo
 function todoAttrList() { // get the list of attrbute list requied for each html element
     this.list = [
         {class: "container-todo"},
-        {id: "todo-check-container"},
-        {id: "todo-title-container"},
-        {id: "todo-delete-container"},
+        {class: "todo-check-container"},
+        {class: "todo-title-container"},
+        {class: "todo-delete-container"},
         {type: "checkbox"},
         {src: deleteImg },
     ]
@@ -193,5 +206,18 @@ function deleteTodo(target) {
     removeTodofromLS(index);
 }
 
+//adding new categories to the list
+function addProjectToList(name) {
+    const selectELe = document.querySelector('#category');
+    const child = getOption(name);
+    selectELe.appendChild(child);
+}
 
-export {toggleForm, getTodo, getProject, toggleTodoDisplay};
+function getOption(value) {
+    const opEle = document.createElement('option');
+    opEle.setAttribute("value", `${value}`);
+    opEle.innerHTML = value;
+    return opEle;
+}
+
+export {toggleForm, getTodo, getProject, toggleTodoDisplay, addProjectToList};

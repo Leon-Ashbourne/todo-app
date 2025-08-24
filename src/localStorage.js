@@ -3,11 +3,12 @@ class LocalStorage {
         throw Error("application denied! client doesn't has necessary permisson");
     };
     static #data;
-    setItem(key, value) {
+    static setItem(key, value) {
         addItemToLocalSt(key, value);
     }
-    getItem(key) { //key- path to the item we need
-        getItemFromLocalSt(key);
+    static getItem(key) { //key- path to the item we need
+        const value = getItemFromLocalSt(key);
+        return value;
     }
     static get storeData() {
         return LocalStorage.#data;
@@ -22,20 +23,26 @@ class LocalStorage {
 
 function addItemToLocalSt(key, val) {
     let tempStg = val;
-    if(Object.getPrototypeOf(val) === Array.prototype) {
-        tempStg = stringifyJson(val) // data is alrady in an array;
-    }else {
-        tempStg = stringifyJson([val]); // val is an object (todo). change it into a json string 
-    }
     let value = localStorage.getItem(key);
     if(value) { //pushing the todo object to the array of todo objects if the category is present beforehand
         value = parseJson(value);
-        value.push(tempStg);
+        pushElements(value, tempStg);
         value = stringifyJson(value);
         localStorage.setItem(key, value);
         return;
     }
+    tempStg = stringifyJson(tempStg);
     localStorage.setItem(key, tempStg);
+}
+
+function pushElements(value, temp) {
+    if(Object.getPrototypeOf(temp) === Array.prototype) {
+        temp.forEach(todo => {
+            value.push(todo);
+        })
+    }else {
+        value.push(temp);
+    }
 }
 
 function getItemFromLocalSt(key) {

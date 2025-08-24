@@ -43,7 +43,7 @@ function defaultTodoData() {
 function getDefaultTodo() {
     const todo = new defaultTodoData();
     LocalStorage.storeData = todo;
-    LocalStorage.setItem = 'userDefined';
+    LocalStorage.setItem('userDefined', todo);
     displayDefaultTodo(todo);
 }
 
@@ -68,4 +68,4 @@ function displayDefaultProject(list) {
     })
 }
 
-export {getDefaultTodo, getDefaultProject};
+export {getDefaultTodo, getDefaultProject, displayDefaultTodo};
