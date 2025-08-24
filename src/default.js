@@ -1,4 +1,5 @@
 import {LocalStorage} from './localStorage.js';
+import {getTodo} from './dom.js';
 
 function defaultTodoData() {
     return [
@@ -42,4 +43,14 @@ function defaultTodoData() {
 function getDefaultTodo() {
     const todo = new defaultTodoData();
     LocalStorage.setItem("defaultUser", todo);
+    displayDefaultTodo(todo);
+}
+
+function displayDefaultTodo(todo) {
+    LocalStorage.storeData = todo;
+    getTodo();
+}
+
+function getDefaultProject() {
+    LocalStorage.getItem()
 }
